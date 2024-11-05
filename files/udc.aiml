@@ -1,8 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<aiml>
-  <category>
-    <pattern>*</pattern>
-    <template>I have no answer for that.</template>
-  </category>
+<aiml version="2.0">
+
+    <!-- Aprender los datos del usuario mediante think -->
+    <!-- Enlazamiento de preguntas de guardado de datos mediante redireccionamiento -->
+    
+    <category>
+        <pattern>ME LLAMO *</pattern>
+        <template>
+            <think>
+                <learn>
+                    <category>
+                        <pattern><eval><star/></eval></pattern>
+                        <template><set name="nombre"><star/></set></template>
+                    </category>
+                </learn>
+            </think>
+            Buenas <get name="nombre"/>. Registra tus apellidos.
+            <srai>MIS APELLIDOS SON *</srai>
+        </template>
+    </category>
+
+    <category>
+        <pattern>MIS APELLIDOS SON *</pattern>
+        <template>
+            <think>
+                <learn>
+                    <category>
+                        <pattern><eval><star/></eval></pattern>
+                        <template><set name="apellidos"><star/></set></template>
+                    </category>
+                </learn>
+            </think>
+            Tus apellidos son <get name="apellidos"/>. Ahora, por favor, indica tu edad.
+            <srai>MI EDAD ES *</srai>
+        </template>
+    </category>
+
+    <category>
+        <pattern>MI EDAD ES *</pattern>
+        <template>
+            <think>
+                <learn>
+                    <category>
+                        <pattern><eval><star/></eval></pattern>
+                        <template><set name="edad"><star/></set></template>
+                    </category>
+                </learn>
+            </think>
+            Tu edad es <get name="edad"/>. Finalmente, ¿cuál es la tecnología que has usado más recientemente?
+            <srai>LA TECNOLOGÍA QUE HE USADO MÁS RECIENTEMENTE ES *</srai>
+        </template>
+    </category>
+
+    <category>
+        <pattern>LA TECNOLOGÍA QUE HE USADO MÁS RECIENTEMENTE ES *</pattern>
+        <template>
+            <think>
+                <learn>
+                    <category>
+                        <pattern><eval><star/></eval></pattern>
+                        <template><set name="tecnologia"><star/></set></template>
+                    </category>
+                </learn>
+            </think>
+            Has usado <get name="tecnologia"/> recientemente.
+        </template>
+    </category>
+
+    <!-- Condicionales para comprobar los datos del usuario -->
+    <category>
+        <pattern>CUÁL ES MI *</pattern>
+        <template>
+            <think>
+                <set name="objeto"><star/></set>
+            </think>
+            <condition name="objeto" value="nombre">
+                Tu nombre es <get name="nombre"/>.
+            </condition>
+            <condition name="objeto" value="apellidos">
+                Tus apellidos son <get name="apellidos"/>.
+            </condition>
+            <condition name="objeto" value="edad">
+                Tu edad es <get name="edad"/> años.
+            </condition>
+            <condition name="objeto" value="tecnologia">
+                La tecnología que has usado recientemente es <get name="tecnologia"/>.
+            </condition>
+            <condition>
+                No tengo información sobre <get name="objeto"/>.
+            </condition>
+        </template>
+    </category>
 
 </aiml>
