@@ -2,21 +2,13 @@
 <aiml version="2.0">
 
     <!-- Aprender los datos del usuario mediante think -->
-    <!-- Enlazamiento de preguntas de guardado de datos mediante redireccionamiento -->
-    
     <category>
         <pattern>ME LLAMO *</pattern>
         <template>
             <think>
-                <learn>
-                    <category>
-                        <pattern><eval><star/></eval></pattern>
-                        <template><set name="nombre"><star/></set></template>
-                    </category>
-                </learn>
+                <set name="nombreUsuario"><star/></set>
             </think>
-            Buenas <get name="nombre"/>. Registra tus apellidos.
-            <srai>MIS APELLIDOS SON *</srai>
+            Buenas <get name="nombreUsuario"/>. Registra tus apellidos.
         </template>
     </category>
 
@@ -24,15 +16,9 @@
         <pattern>MIS APELLIDOS SON *</pattern>
         <template>
             <think>
-                <learn>
-                    <category>
-                        <pattern><eval><star/></eval></pattern>
-                        <template><set name="apellidos"><star/></set></template>
-                    </category>
-                </learn>
+                <set name="apellidos"><star/></set>
             </think>
             Tus apellidos son <get name="apellidos"/>. Ahora, por favor, indica tu edad.
-            <srai>MI EDAD ES *</srai>
         </template>
     </category>
 
@@ -40,15 +26,9 @@
         <pattern>MI EDAD ES *</pattern>
         <template>
             <think>
-                <learn>
-                    <category>
-                        <pattern><eval><star/></eval></pattern>
-                        <template><set name="edad"><star/></set></template>
-                    </category>
-                </learn>
+                <set name="edad"><star/></set>
             </think>
             Tu edad es <get name="edad"/>. Finalmente, ¿cuál es la tecnología que has usado más recientemente?
-            <srai>LA TECNOLOGÍA QUE HE USADO MÁS RECIENTEMENTE ES *</srai>
         </template>
     </category>
 
@@ -56,14 +36,9 @@
         <pattern>LA TECNOLOGÍA QUE HE USADO MÁS RECIENTEMENTE ES *</pattern>
         <template>
             <think>
-                <learn>
-                    <category>
-                        <pattern><eval><star/></eval></pattern>
-                        <template><set name="tecnologia"><star/></set></template>
-                    </category>
-                </learn>
+                <set name="tecnologia"><star/></set>
             </think>
-            Has usado <get name="tecnologia"/> recientemente.
+            Has usado <get name="tecnologia"/> recientemente. ¡Gracias por registrar tus datos!
         </template>
     </category>
 
@@ -75,7 +50,7 @@
                 <set name="objeto"><star/></set>
             </think>
             <condition name="objeto" value="nombre">
-                Tu nombre es <get name="nombre"/>.
+                Tu nombre es <get name="nombreUsuario"/>.
             </condition>
             <condition name="objeto" value="apellidos">
                 Tus apellidos son <get name="apellidos"/>.
@@ -89,6 +64,33 @@
             <condition>
                 No tengo información sobre <get name="objeto"/>.
             </condition>
+        </template>
+    </category>
+
+    <category>
+        <pattern>CUÁLES SON MIS *</pattern>
+        <template>
+            <think>
+                <set name="objeto"><star/></set>
+            </think>
+            <condition name="objeto" value="apellidos">
+                Tus apellidos son <get name="apellidos"/>.
+            </condition>
+            <condition>
+                No tengo información sobre <get name="objeto"/>.
+            </condition>
+        </template>
+    </category>
+
+    <!-- Redirección para obtener todos los datos del usuario -->
+    <category>
+        <pattern>MUESTRAME TODOS MIS DATOS</pattern>
+        <template>
+            Aquí están tus datos:<br/>
+            <srai>CUÁL ES MI NOMBRE</srai><br/>
+            <srai>CUÁLES SON MIS APELLIDOS</srai><br/>
+            <srai>CUÁL ES MI EDAD</srai><br/>
+            <srai>CUÁL ES MI TECNOLOGIA</srai><br/>
         </template>
     </category>
 
