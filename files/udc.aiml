@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml version="2.0">
+    
+    <!-- Mensaje de saludo -->
+    <category>
+        <pattern>HOLA</pattern>
+        <template>Buenas, soy un bot de registro de datos de usuario. Para empezar, dime cómo te llamas.</template>
+    </category>
 
     <!-- Aprender los datos del usuario mediante think -->
+    
+    <!-- Sintáxis 1 para guardar el nombre-->
     <category>
         <pattern>ME LLAMO *</pattern>
         <template>
@@ -11,14 +19,26 @@
             Buenas <get name="nombreUsuario"/>. Registra tus apellidos.
         </template>
     </category>
-
+    <!-- Sintáxis 2 para guardar el nombre -->
     <category>
-        <pattern>MIS APELLIDOS SON *</pattern>
+        <pattern>MI NOMBRE ES *</pattern>
         <template>
             <think>
-                <set name="apellidos"><star/></set>
+                <set name="nombreUsuario"><star/></set>
             </think>
-            Tus apellidos son <get name="apellidos"/>. Ahora, por favor, indica tu edad.
+            Buenas <get name="nombreUsuario"/>. Registra tus apellidos.
+        </template>
+    </category>
+
+    <!-- Permite almacenar dos apellidos -->
+    <category>
+        <pattern>MIS APELLIDOS SON * *</pattern>
+        <template>
+            <think>
+                <set name="apellido1"><star index="1"/></set>
+                <set name="apellido2"><star index="2"/></set>
+            </think>
+            Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>. Ahora, por favor, indica tu edad.
         </template>
     </category>
 
@@ -32,6 +52,7 @@
         </template>
     </category>
 
+    <!-- Sintáxis 1 para guardar la tecnología -->
     <category>
         <pattern>LA TECNOLOGÍA QUE HE USADO MÁS RECIENTEMENTE ES *</pattern>
         <template>
@@ -41,8 +62,30 @@
             Has usado <get name="tecnologia"/> recientemente. ¡Gracias por registrar tus datos!
         </template>
     </category>
+    <!-- Sintáxis 2 para guardar la tenología -->
+    <category>
+        <pattern>LA TECNOLOGÍA QUE HE MÁS USADO RECIENTEMENTE ES *</pattern>
+        <template>
+            <think>
+                <set name="tecnologia"><star/></set>
+            </think>
+            Has usado <get name="tecnologia"/> recientemente. ¡Gracias por registrar tus datos!
+        </template>
+    </category>
+    <!-- Sintáxis 3 para guardar la tenología -->
+    <category>
+        <pattern>LA TECNOLOGÍA ES *</pattern>
+        <template>
+            <think>
+                <set name="tecnologia"><star/></set>
+            </think>
+            Has usado <get name="tecnologia"/> recientemente. ¡Gracias por registrar tus datos!
+        </template>
+    </category>
+    
 
     <!-- Condicionales para comprobar los datos del usuario -->
+
     <category>
         <pattern>CUÁL ES MI *</pattern>
         <template>
@@ -53,10 +96,13 @@
                 Tu nombre es <get name="nombreUsuario"/>.
             </condition>
             <condition name="objeto" value="apellidos">
-                Tus apellidos son <get name="apellidos"/>.
+                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
             </condition>
             <condition name="objeto" value="edad">
                 Tu edad es <get name="edad"/> años.
+            </condition>
+            <condition name="objeto" value="tecnología">
+                La tecnología que has usado recientemente es <get name="tecnologia"/>.
             </condition>
             <condition name="objeto" value="tecnologia">
                 La tecnología que has usado recientemente es <get name="tecnologia"/>.
@@ -68,13 +114,25 @@
     </category>
 
     <category>
-        <pattern>CUÁLES SON MIS *</pattern>
+        <pattern>CUAL ES MI *</pattern>
         <template>
             <think>
                 <set name="objeto"><star/></set>
             </think>
+            <condition name="objeto" value="nombre">
+                Tu nombre es <get name="nombreUsuario"/>.
+            </condition>
             <condition name="objeto" value="apellidos">
-                Tus apellidos son <get name="apellidos"/>.
+                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
+            </condition>
+            <condition name="objeto" value="edad">
+                Tu edad es <get name="edad"/> años.
+            </condition>
+            <condition name="objeto" value="tecnología">
+                La tecnología que has usado recientemente es <get name="tecnologia"/>.
+            </condition>
+            <condition name="objeto" value="tecnologia">
+                La tecnología que has usado recientemente es <get name="tecnologia"/>.
             </condition>
             <condition>
                 No tengo información sobre <get name="objeto"/>.
@@ -82,9 +140,224 @@
         </template>
     </category>
 
+    <category>
+        <pattern>¿CUÁL ES MI *?</pattern>
+        <template>
+            <think>
+                <set name="objeto"><star/></set>
+            </think>
+            <condition name="objeto" value="nombre">
+                Tu nombre es <get name="nombreUsuario"/>.
+            </condition>
+            <condition name="objeto" value="apellidos">
+                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
+            </condition>
+            <condition name="objeto" value="edad">
+                Tu edad es <get name="edad"/> años.
+            </condition>
+            <condition name="objeto" value="tecnología">
+                La tecnología que has usado recientemente es <get name="tecnologia"/>.
+            </condition>
+            <condition name="objeto" value="tecnologia">
+                La tecnología que has usado recientemente es <get name="tecnologia"/>.
+            </condition>
+            <condition>
+                No tengo información sobre <get name="objeto"/>.
+            </condition>
+        </template>
+    </category>
+
+    <category>
+        <pattern>¿CUAL ES MI *?</pattern>
+        <template>
+            <think>
+                <set name="objeto"><star/></set>
+            </think>
+            <condition name="objeto" value="nombre">
+                Tu nombre es <get name="nombreUsuario"/>.
+            </condition>
+            <condition name="objeto" value="apellidos">
+                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
+            </condition>
+            <condition name="objeto" value="edad">
+                Tu edad es <get name="edad"/> años.
+            </condition>
+            <condition name="objeto" value="tecnología">
+                La tecnología que has usado recientemente es <get name="tecnologia"/>.
+            </condition>
+            <condition name="objeto" value="tecnologia">
+                La tecnología que has usado recientemente es <get name="tecnologia"/>.
+            </condition>
+            <condition>
+                No tengo información sobre <get name="objeto"/>.
+            </condition>
+        </template>
+    </category>
+
+    
+    <!-- Sintáxis alternativa para obtenerla tecnología -->
+    <category>
+        <pattern>CUÁL ES MI * USADA MÁS RECIENTE</pattern>
+        <template>
+            <think>
+                <set name="objeto"><star/></set>
+            </think>
+            <condition name="objeto" value="tecnología">
+                La tecnología que has usado recientemente es <get name="tecnologia"/>.
+            </condition>
+            <condition name="objeto" value="tecnología">
+                La tecnología que has usado recientemente es <get name="tecnología"/>.
+            </condition>
+        </template>
+    </category>
+
+    <category>
+        <pattern>CUÁLES SON MIS *</pattern>
+        <template>
+            <think>
+                <set name="objeto"><star/></set>
+            </think>
+            <condition name="objeto" value="apellidos">
+                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
+            </condition>
+        </template>
+    </category>
+    
+    <category>
+        <pattern>CUAL ES MI * USADA MÁS RECIENTE</pattern>
+        <template>
+            <think>
+                <set name="objeto"><star/></set>
+            </think>
+            <condition name="objeto" value="tecnología">
+                La tecnología que has usado recientemente es <get name="tecnologia"/>.
+            </condition>
+            <condition name="objeto" value="tecnología">
+                La tecnología que has usado recientemente es <get name="tecnología"/>.
+            </condition>
+        </template>
+    </category>
+
+    <category>
+        <pattern>CUÁLES SON MIS *</pattern>
+        <template>
+            <think>
+                <set name="objeto"><star/></set>
+            </think>
+            <condition name="objeto" value="apellidos">
+                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
+            </condition>
+        </template>
+    </category>
+    
+    <category>
+        <pattern>¿CUÁL ES MI * USADA MÁS RECIENTE?</pattern>
+        <template>
+            <think>
+                <set name="objeto"><star/></set>
+            </think>
+            <condition name="objeto" value="tecnología">
+                La tecnología que has usado recientemente es <get name="tecnologia"/>.
+            </condition>
+            <condition name="objeto" value="tecnología">
+                La tecnología que has usado recientemente es <get name="tecnología"/>.
+            </condition>
+        </template>
+    </category>
+    
+    <category>
+        <pattern>CUAL ES MI * USADA MÁS RECIENTE</pattern>
+        <template>
+            <think>
+                <set name="objeto"><star/></set>
+            </think>
+            <condition name="objeto" value="tecnología">
+                La tecnología que has usado recientemente es <get name="tecnologia"/>.
+            </condition>
+            <condition name="objeto" value="tecnología">
+                La tecnología que has usado recientemente es <get name="tecnología"/>.
+            </condition>
+        </template>
+    </category>
+    
+    <category>
+        <pattern>¿CUAL ES MI * USADA MÁS RECIENTE?</pattern>
+        <template>
+            <think>
+                <set name="objeto"><star/></set>
+            </think>
+            <condition name="objeto" value="tecnología">
+                La tecnología que has usado recientemente es <get name="tecnologia"/>.
+            </condition>
+            <condition name="objeto" value="tecnología">
+                La tecnología que has usado recientemente es <get name="tecnología"/>.
+            </condition>
+        </template>
+    </category>
+
+    <!-- Sintáxis para obtener los apellidos -->
+    <category>
+        <pattern>CUÁLES SON MIS *</pattern>
+        <template>
+            <think>
+                <set name="objeto"><star/></set>
+            </think>
+            <condition name="objeto" value="apellidos">
+                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
+            </condition>
+        </template>
+    </category>
+
+    <category>
+        <pattern>CUÁLES SON MIS *</pattern>
+        <template>
+            <think>
+                <set name="objeto"><star/></set>
+            </think>
+            <condition name="objeto" value="apellidos">
+                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
+            </condition>
+        </template>
+    </category>
+    
+    <category>
+        <pattern>¿CUÁLES SON MIS *?</pattern>
+        <template>
+            <think>
+                <set name="objeto"><star/></set>
+            </think>
+            <condition name="objeto" value="apellidos">
+                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
+            </condition>
+        </template>
+    </category>
+
+    <category>
+        <pattern>¿CUÁLES SON MIS *?</pattern>
+        <template>
+            <think>
+                <set name="objeto"><star/></set>
+            </think>
+            <condition name="objeto" value="apellidos">
+                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
+            </condition>
+        </template>
+    </category>
+
     <!-- Redirección para obtener todos los datos del usuario -->
     <category>
-        <pattern>MUESTRAME TODOS MIS DATOS</pattern>
+        <pattern>MUÉSTRAME TODOS MIS DATOS</pattern>
+        <template>
+            Aquí están tus datos:<br/>
+            <srai>CUÁL ES MI NOMBRE</srai><br/>
+            <srai>CUÁLES SON MIS APELLIDOS</srai><br/>
+            <srai>CUÁL ES MI EDAD</srai><br/>
+            <srai>CUÁL ES MI TECNOLOGIA</srai><br/>
+        </template>
+    </category>
+    
+    <category>
+        <pattern>MUÉSTRAME MIS DATOS</pattern>
         <template>
             Aquí están tus datos:<br/>
             <srai>CUÁL ES MI NOMBRE</srai><br/>
