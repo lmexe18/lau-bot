@@ -4,366 +4,281 @@
     <!-- Mensaje de saludo -->
     <category>
         <pattern>HOLA</pattern>
-        <template>Buenas, soy un bot de registro de datos de usuario. Para empezar, dime cómo te llamas.</template>
+        <template>
+            <think>
+                <!-- Inicializo las variables que voy a utilizar -->
+                <set name="registro">false</set>  
+                <set name="nombreUsuario"> </set>
+                <set name="apellido1"> </set>
+                <set name="apellido2"> </set>
+                <set name="edad"> </set>
+                <set name="tecnologia"> </set>
+            </think>
+            Buenas, soy un bot para el manejo de un empleado. Puedo comprobar si ya se encuentra registrado y obtener información sobre él, eliminarlo o registrar uno nuevo. ¿Qué desea?
+        </template>
     </category>
-
-    <!-- Aprender los datos del usuario mediante think -->
     
-    <!-- Sintáxis 1 para guardar el nombre-->
+    <!-- Comprobar si hay un empleado registrado. Si es así, te da los datos -->
     <category>
-        <pattern>ME LLAMO *</pattern>
+        <pattern>COMPROBAR SI HAY USUARIO REGISTRADO</pattern>
         <template>
-            <think>
-                <set name="nombreUsuario"><star/></set>
-            </think>
-            Buenas <get name="nombreUsuario"/>. Registra tus apellidos.
-        </template>
-    </category>
-    <!-- Sintáxis 2 para guardar el nombre -->
-    <category>
-        <pattern>MI NOMBRE ES *</pattern>
-        <template>
-            <think>
-                <set name="nombreUsuario"><star/></set>
-            </think>
-            Buenas <get name="nombreUsuario"/>. Registra tus apellidos.
+            <condition name="registro" value="true">
+                Aquí están los datos del empleado más reciente:<br/>
+                Nombre: <get name="nombreUsuario"/><br/>
+                Apellidos: <get name="apellido1"/> <get name="apellido2"/><br/>
+                Edad: <get name="edad"/><br/>
+                Tecnología reciente: <get name="tecnologia"/><br/>
+            </condition>
+            <condition name="registro" value="false">
+                No hay un empleado registrado actualmente. Por favor, registra uno antes de intentar consultar los datos.
+            </condition>
         </template>
     </category>
 
-    <!-- Permite almacenar dos apellidos -->
+    <!-- Registro y aprendizaje de los datos del empleado mediante think -->
     <category>
-        <pattern>MIS APELLIDOS SON * *</pattern>
+        <pattern>REGISTRAR NUEVO EMPLEADO</pattern>
+        <template>Introduce el nombre del empleado.</template>
+    </category>
+    
+    <category>
+        <pattern>EL NOMBRE ES *</pattern>
+        <template>
+            <think>
+                <set name="nombreUsuario"><star/></set>
+            </think>
+            Registra los apellidos.
+        </template>
+    </category>
+
+    <!-- Almacenamiento de dos apellidos -->
+    <category>
+        <pattern>LOS APELLIDOS SON * *</pattern>
         <template>
             <think>
                 <set name="apellido1"><star index="1"/></set>
                 <set name="apellido2"><star index="2"/></set>
             </think>
-            Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>. Ahora, por favor, indica tu edad.
+            Gracias, el nuevo empleado es <get name="nombreUsuario"/> <get name="apellido1"/> <get name="apellido2"/>. Ahora, por favor, indica su edad.
         </template>
     </category>
 
     <category>
-        <pattern>MI EDAD ES *</pattern>
+        <pattern>SU EDAD ES *</pattern>
         <template>
             <think>
                 <set name="edad"><star/></set>
             </think>
-            Tu edad es <get name="edad"/>. Finalmente, ¿cuál es la tecnología que has usado más recientemente?
+            Finalmente, ¿cuál es la tecnología que ha usado más recientemente?
         </template>
     </category>
 
-    <!-- Sintáxis 1 para guardar la tecnología -->
-    <category>
-        <pattern>LA TECNOLOGÍA QUE HE USADO MÁS RECIENTEMENTE ES *</pattern>
-        <template>
-            <think>
-                <set name="tecnologia"><star/></set>
-            </think>
-            Has usado <get name="tecnologia"/> recientemente. ¡Gracias por registrar tus datos!
-        </template>
-    </category>
-    <!-- Sintáxis 2 para guardar la tenología -->
-    <category>
-        <pattern>LA TECNOLOGÍA QUE HE MÁS USADO RECIENTEMENTE ES *</pattern>
-        <template>
-            <think>
-                <set name="tecnologia"><star/></set>
-            </think>
-            Has usado <get name="tecnologia"/> recientemente. ¡Gracias por registrar tus datos!
-        </template>
-    </category>
-    <!-- Sintáxis 3 para guardar la tenología -->
+    <!-- Guardado de la tecnología y mostrar todos los datos -->
     <category>
         <pattern>LA TECNOLOGÍA ES *</pattern>
         <template>
             <think>
                 <set name="tecnologia"><star/></set>
+                <set name="registro">true</set>
             </think>
-            Has usado <get name="tecnologia"/> recientemente. ¡Gracias por registrar tus datos!
+            Datos del nuevo empleado:<br/>
+            Nombre: <get name="nombreUsuario"/><br/>
+            Apellidos: <get name="apellido1"/> <get name="apellido2"/><br/>
+            Edad: <get name="edad"/><br/>
+            Tecnología reciente: <get name="tecnologia"/>.<br/>
+            ¿Quieres modificar algún dato antes de guardar los datos?
         </template>
     </category>
     
-
-    <!-- Condicionales para comprobar los datos del usuario -->
-
-    <category>
-        <pattern>CUÁL ES MI *</pattern>
+    <!-- Modificar los datos -->
+   <category>
+        <pattern>MODIFICAR * POR *</pattern>
         <template>
             <think>
-                <set name="objeto"><star/></set>
+                <set name="campo"><star index="1"/></set>
+                <set name="nuevoValor"><star index="2"/></set>
+                <learn>
+                    <category>
+                        <pattern><get name="campo"/></pattern>
+                        <template><get name="nuevoValor"/></template>
+                    </category>
+                </learn>
             </think>
-            <condition name="objeto" value="nombre">
-                Tu nombre es <get name="nombreUsuario"/>.
-            </condition>
-            <condition name="objeto" value="apellidos">
-                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
-            </condition>
-            <condition name="objeto" value="edad">
-                Tu edad es <get name="edad"/> años.
-            </condition>
-            <condition name="objeto" value="tecnología">
-                La tecnología que has usado recientemente es <get name="tecnologia"/>.
-            </condition>
-            <condition name="objeto" value="tecnologia">
-                La tecnología que has usado recientemente es <get name="tecnologia"/>.
-            </condition>
-            <condition>
-                No tengo información sobre <get name="objeto"/>.
-            </condition>
-        </template>
-    </category>
-
-    <category>
-        <pattern>CUAL ES MI *</pattern>
-        <template>
-            <think>
-                <set name="objeto"><star/></set>
-            </think>
-            <condition name="objeto" value="nombre">
-                Tu nombre es <get name="nombreUsuario"/>.
-            </condition>
-            <condition name="objeto" value="apellidos">
-                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
-            </condition>
-            <condition name="objeto" value="edad">
-                Tu edad es <get name="edad"/> años.
-            </condition>
-            <condition name="objeto" value="tecnología">
-                La tecnología que has usado recientemente es <get name="tecnologia"/>.
-            </condition>
-            <condition name="objeto" value="tecnologia">
-                La tecnología que has usado recientemente es <get name="tecnologia"/>.
-            </condition>
-            <condition>
-                No tengo información sobre <get name="objeto"/>.
-            </condition>
-        </template>
-    </category>
-
-    <category>
-        <pattern>¿CUÁL ES MI *?</pattern>
-        <template>
-            <think>
-                <set name="objeto"><star/></set>
-            </think>
-            <condition name="objeto" value="nombre">
-                Tu nombre es <get name="nombreUsuario"/>.
-            </condition>
-            <condition name="objeto" value="apellidos">
-                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
-            </condition>
-            <condition name="objeto" value="edad">
-                Tu edad es <get name="edad"/> años.
-            </condition>
-            <condition name="objeto" value="tecnología">
-                La tecnología que has usado recientemente es <get name="tecnologia"/>.
-            </condition>
-            <condition name="objeto" value="tecnologia">
-                La tecnología que has usado recientemente es <get name="tecnologia"/>.
-            </condition>
-            <condition>
-                No tengo información sobre <get name="objeto"/>.
-            </condition>
-        </template>
-    </category>
-
-    <category>
-        <pattern>¿CUAL ES MI *?</pattern>
-        <template>
-            <think>
-                <set name="objeto"><star/></set>
-            </think>
-            <condition name="objeto" value="nombre">
-                Tu nombre es <get name="nombreUsuario"/>.
-            </condition>
-            <condition name="objeto" value="apellidos">
-                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
-            </condition>
-            <condition name="objeto" value="edad">
-                Tu edad es <get name="edad"/> años.
-            </condition>
-            <condition name="objeto" value="tecnología">
-                La tecnología que has usado recientemente es <get name="tecnologia"/>.
-            </condition>
-            <condition name="objeto" value="tecnologia">
-                La tecnología que has usado recientemente es <get name="tecnologia"/>.
-            </condition>
-            <condition>
-                No tengo información sobre <get name="objeto"/>.
-            </condition>
-        </template>
-    </category>
-
     
-    <!-- Sintáxis alternativa para obtenerla tecnología -->
-    <category>
-        <pattern>CUÁL ES MI * USADA MÁS RECIENTE</pattern>
-        <template>
-            <think>
-                <set name="objeto"><star/></set>
-            </think>
-            <condition name="objeto" value="tecnología">
-                La tecnología que has usado recientemente es <get name="tecnologia"/>.
+            <condition name="campo">
+                <li value="nombre">
+                    <think>
+                        <set name="nombreUsuario"><get name="nuevoValor"/></set>
+                    </think>
+                    Vale, el nombre se ha modificado por "<get name='nuevoValor'/>".
+                </li>
+                <li value="apellido1">
+                    <think>
+                        <set name="apellido1"><get name="nuevoValor"/></set>
+                    </think>
+                    Vale, el primer apellido se ha modificado por "<get name='nuevoValor'/>".
+                </li>
+                <li value="apellido2">
+                    <think>
+                        <set name="apellido2"><get name="nuevoValor"/></set>
+                    </think>
+                    Vale, el segundo apellido se ha modificado por "<get name='nuevoValor'/>".
+                </li>
+                <li value="edad">
+                    <think>
+                        <set name="edad"><get name="nuevoValor"/></set>
+                    </think>
+                    Vale, la edad se ha modificado por "<get name='nuevoValor'/>".
+                </li>
+                <li value="tecnologia">
+                    <think>
+                        <set name="tecnologia"><get name="nuevoValor"/></set>
+                    </think>
+                    Vale, la tecnología se ha modificado por "<get name='nuevoValor'/>".
+                </li>
+                <li>
+                    Lo siento, no reconozco el campo "<get name='campo'/>" para modificar.
+                </li>
             </condition>
-            <condition name="objeto" value="tecnología">
-                La tecnología que has usado recientemente es <get name="tecnología"/>.
-            </condition>
+            <br/>
+            Datos del nuevo empleado:<br/>
+            Nombre: <get name="nombreUsuario"/><br/>
+            Apellidos: <get name="apellido1"/> <get name="apellido2"/><br/>
+            Edad: <get name="edad"/><br/>
+            Tecnología reciente: <get name="tecnologia"/>.<br/>
+            ¿Quieres modificar algún dato antes de guardar los datos?
         </template>
     </category>
 
     <category>
-        <pattern>CUÁLES SON MIS *</pattern>
+        <pattern>NO MODIFICAR NINGÚN DATO</pattern>
+        <template>¡Perfecto! ¿Deseas algo más?</template>
+    </category>
+
+   <!-- Condicionales para comprobar los datos del usuario -->
+    <category>
+        <pattern>DIME LA * DEL EMPLEADO</pattern>
         <template>
             <think>
-                <set name="objeto"><star/></set>
+                <set name="objeto"><star index="1"/></set>
             </think>
-            <condition name="objeto" value="apellidos">
-                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
+            <condition name="registro" value="true">
+                <condition name="objeto">
+                    <li value="edad">
+                        La edad del empleado es <get name="edad"/> años.
+                    </li>
+                    <li value="tecnología">
+                        La tecnología usada recientemente es <get name="tecnologia"/>.
+                    </li>
+                    <li>
+                        No tengo información sobre <get name="objeto"/>.
+                    </li>
+                </condition>
+            </condition>
+            <condition name="registro" value="false">
+                No hay un empleado registrado actualmente.
             </condition>
         </template>
     </category>
     
     <category>
-        <pattern>CUAL ES MI * USADA MÁS RECIENTE</pattern>
+        <pattern>DIME EL * DEL EMPLEADO</pattern>
         <template>
             <think>
-                <set name="objeto"><star/></set>
+                <set name="objeto"><star index="1"/></set>
             </think>
-            <condition name="objeto" value="tecnología">
-                La tecnología que has usado recientemente es <get name="tecnologia"/>.
+            <condition name="registro" value="true">
+                <condition name="objeto">
+                    <li value="nombre">
+                        El nombre del empleado es <get name="nombreUsuario"/>.
+                    </li>
+                    <li>
+                        No tengo información sobre <get name="objeto"/>.
+                    </li>
+                </condition>
             </condition>
-            <condition name="objeto" value="tecnología">
-                La tecnología que has usado recientemente es <get name="tecnología"/>.
-            </condition>
-        </template>
-    </category>
-
-    <category>
-        <pattern>CUÁLES SON MIS *</pattern>
-        <template>
-            <think>
-                <set name="objeto"><star/></set>
-            </think>
-            <condition name="objeto" value="apellidos">
-                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
+            <condition name="registro" value="false">
+                No hay un empleado registrado actualmente.
             </condition>
         </template>
     </category>
     
     <category>
-        <pattern>¿CUÁL ES MI * USADA MÁS RECIENTE?</pattern>
+        <pattern>DIME LOS * DEL EMPLEADO</pattern>
         <template>
             <think>
-                <set name="objeto"><star/></set>
+                <set name="objeto"><star index="1"/></set>
             </think>
-            <condition name="objeto" value="tecnología">
-                La tecnología que has usado recientemente es <get name="tecnologia"/>.
+            <condition name="registro" value="true">
+                <condition name="objeto">
+                    <li value="apellidos">
+                        Los apellidos son <get name="apellido1"/> <get name="apellido2"/>.
+                    </li>
+                    <li>
+                        No tengo información sobre <get name="objeto"/>.
+                    </li>
+                </condition>
             </condition>
-            <condition name="objeto" value="tecnología">
-                La tecnología que has usado recientemente es <get name="tecnología"/>.
-            </condition>
-        </template>
-    </category>
-    
-    <category>
-        <pattern>CUAL ES MI * USADA MÁS RECIENTE</pattern>
-        <template>
-            <think>
-                <set name="objeto"><star/></set>
-            </think>
-            <condition name="objeto" value="tecnología">
-                La tecnología que has usado recientemente es <get name="tecnologia"/>.
-            </condition>
-            <condition name="objeto" value="tecnología">
-                La tecnología que has usado recientemente es <get name="tecnología"/>.
-            </condition>
-        </template>
-    </category>
-    
-    <category>
-        <pattern>¿CUAL ES MI * USADA MÁS RECIENTE?</pattern>
-        <template>
-            <think>
-                <set name="objeto"><star/></set>
-            </think>
-            <condition name="objeto" value="tecnología">
-                La tecnología que has usado recientemente es <get name="tecnologia"/>.
-            </condition>
-            <condition name="objeto" value="tecnología">
-                La tecnología que has usado recientemente es <get name="tecnología"/>.
+            <condition name="registro" value="false">
+                No hay un empleado registrado actualmente.
             </condition>
         </template>
     </category>
 
-    <!-- Sintáxis para obtener los apellidos -->
+     <!-- Redirección con condición para obtener todos los datos del último empleado registrado -->
     <category>
-        <pattern>CUÁLES SON MIS *</pattern>
+        <pattern>MUÉSTRAME TODOS LOS DATOS DEL EMPLEADO REGISTRADO</pattern>
         <template>
-            <think>
-                <set name="objeto"><star/></set>
-            </think>
-            <condition name="objeto" value="apellidos">
-                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
+            <condition name="registro" value="true">
+                Aquí están los datos del empleado más reciente:<br/>
+                Nombre: <get name="nombreUsuario"/><br/>
+                Apellidos: <get name="apellido1"/> <get name="apellido2"/><br/>
+                Edad: <get name="edad"/><br/>
+                Tecnología reciente: <get name="tecnologia"/><br/>
+            </condition>
+            <condition name="registro" value="false">
+                No hay un empleado registrado actualmente. Por favor, registra uno antes de intentar consultar los datos.
             </condition>
         </template>
     </category>
 
-    <category>
-        <pattern>CUÁLES SON MIS *</pattern>
-        <template>
-            <think>
-                <set name="objeto"><star/></set>
-            </think>
-            <condition name="objeto" value="apellidos">
-                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
-            </condition>
-        </template>
-    </category>
     
+    <!-- Borrar los datos del empleado utilizando ambos apellidos -->
     <category>
-        <pattern>¿CUÁLES SON MIS *?</pattern>
+        <pattern>BORRAR EMPLEADO REGISTRADO</pattern>
+        <template>
+            <condition name="registro" value="true">
+                ¿Estás seguro de que deseas borrar al empleado? Aquí están sus datos:<br/>
+                <srai>MUÉSTRAME TODOS LOS DATOS DEL EMPLEADO REGISTRADO</srai><br/>
+                Si es así, por favor, confirma.
+            </condition>
+            <condition name="registro" value="false">
+                No hay un empleado registrado actualmente. Por favor, registra uno antes de usar nuestro sistema.
+            </condition>
+        </template>
+</category>
+
+    <!-- Confirmar borrado de empleado -->
+    <category>
+        <pattern>SI</pattern>
         <template>
             <think>
-                <set name="objeto"><star/></set>
+                <set name="registro">false</set>
+                <set name="nombreUsuario"> </set>
+                <set name="apellido1"> </set>
+                <set name="apellido2"> </set>
+                <set name="edad"> </set>
+                <set name="tecnologia"> </set>
             </think>
-            <condition name="objeto" value="apellidos">
-                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
-            </condition>
+            El empleado ha sido borrado con éxito.
         </template>
     </category>
 
+    <!-- Cancelar borrado -->
     <category>
-        <pattern>¿CUÁLES SON MIS *?</pattern>
+        <pattern>NO</pattern>
         <template>
-            <think>
-                <set name="objeto"><star/></set>
-            </think>
-            <condition name="objeto" value="apellidos">
-                Tus apellidos son <get name="apellido1"/> <get name="apellido2"/>.
-            </condition>
-        </template>
-    </category>
-
-    <!-- Redirección para obtener todos los datos del usuario -->
-    <category>
-        <pattern>MUÉSTRAME TODOS MIS DATOS</pattern>
-        <template>
-            Aquí están tus datos:<br/>
-            <srai>CUÁL ES MI NOMBRE</srai><br/>
-            <srai>CUÁLES SON MIS APELLIDOS</srai><br/>
-            <srai>CUÁL ES MI EDAD</srai><br/>
-            <srai>CUÁL ES MI TECNOLOGIA</srai><br/>
-        </template>
-    </category>
-    
-    <category>
-        <pattern>MUÉSTRAME MIS DATOS</pattern>
-        <template>
-            Aquí están tus datos:<br/>
-            <srai>CUÁL ES MI NOMBRE</srai><br/>
-            <srai>CUÁLES SON MIS APELLIDOS</srai><br/>
-            <srai>CUÁL ES MI EDAD</srai><br/>
-            <srai>CUÁL ES MI TECNOLOGIA</srai><br/>
+            El borrado ha sido cancelado.
         </template>
     </category>
 
