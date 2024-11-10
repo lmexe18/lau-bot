@@ -14,7 +14,7 @@
                 <set name="edad"> </set>
                 <set name="tecnologia"> </set>
             </think>
-            Buenas, soy un bot para el manejo de un empleado. Puedo comprobar si ya se encuentra registrado y obtener información sobre él, eliminarlo o registrar uno nuevo. ¿Qué desea?
+            Buenas, soy un bot para el manejo de un empleado. Puedo comprobar si ya se encuentra registrado y obtener información sobre él, eliminarlo, modificar sus datos o registrar uno nuevo. ¿Qué desea?
         </template>
     </category>
     
@@ -86,7 +86,7 @@
             Apellidos: <get name="apellido1"/> <get name="apellido2"/><br/>
             Edad: <get name="edad"/><br/>
             Tecnología reciente: <get name="tecnologia"/>.<br/>
-            ¿Quieres modificar algún dato antes de guardar los datos?
+            ¿Quieres modificar algún dato?
         </template>
     </category>
     
@@ -105,48 +105,50 @@
                 </learn>
             </think>
     
-            <condition name="campo">
-                <li value="nombre">
-                    <think>
-                        <set name="nombreUsuario"><get name="nuevoValor"/></set>
-                    </think>
-                    Vale, el nombre se ha modificado por "<get name='nuevoValor'/>".
-                </li>
-                <li value="apellido1">
-                    <think>
-                        <set name="apellido1"><get name="nuevoValor"/></set>
-                    </think>
-                    Vale, el primer apellido se ha modificado por "<get name='nuevoValor'/>".
-                </li>
-                <li value="apellido2">
-                    <think>
-                        <set name="apellido2"><get name="nuevoValor"/></set>
-                    </think>
-                    Vale, el segundo apellido se ha modificado por "<get name='nuevoValor'/>".
-                </li>
-                <li value="edad">
-                    <think>
-                        <set name="edad"><get name="nuevoValor"/></set>
-                    </think>
-                    Vale, la edad se ha modificado por "<get name='nuevoValor'/>".
-                </li>
-                <li value="tecnologia">
-                    <think>
-                        <set name="tecnologia"><get name="nuevoValor"/></set>
-                    </think>
-                    Vale, la tecnología se ha modificado por "<get name='nuevoValor'/>".
-                </li>
-                <li>
-                    Lo siento, no reconozco el campo "<get name='campo'/>" para modificar.
-                </li>
+            <condition name="registro" value="true">
+                <condition name="campo">
+                    <li value="nombre">
+                        <think>
+                            <set name="nombreUsuario"><get name="nuevoValor"/></set>
+                        </think>
+                        Vale, el nombre se ha modificado por "<get name='nuevoValor'/>".
+                    </li>
+                    <li value="apellido1">
+                        <think>
+                            <set name="apellido1"><get name="nuevoValor"/></set>
+                        </think>
+                        Vale, el primer apellido se ha modificado por "<get name='nuevoValor'/>".
+                    </li>
+                    <li value="apellido2">
+                        <think>
+                            <set name="apellido2"><get name="nuevoValor"/></set>
+                        </think>
+                        Vale, el segundo apellido se ha modificado por "<get name='nuevoValor'/>".
+                    </li>
+                    <li value="edad">
+                        <think>
+                            <set name="edad"><get name="nuevoValor"/></set>
+                        </think>
+                        Vale, la edad se ha modificado por "<get name='nuevoValor'/>".
+                    </li>
+                    <li value="tecnologia">
+                        <think>
+                            <set name="tecnologia"><get name="nuevoValor"/></set>
+                        </think>
+                        Vale, la tecnología se ha modificado por "<get name='nuevoValor'/>".
+                    </li>
+                    <li>
+                        Lo siento, no reconozco el campo "<get name='campo'/>" para modificar.
+                    </li>
+                </condition>
             </condition>
             <br/>
-            Datos del nuevo empleado:<br/>
+            Datos del empleado:<br/>
             Nombre: <get name="nombreUsuario"/><br/>
             Apellidos: <get name="apellido1"/> <get name="apellido2"/><br/>
             Edad: <get name="edad"/><br/>
             Tecnología reciente: <get name="tecnologia"/>.<br/>
-            ¿Quieres modificar algún dato antes de guardar los datos?
+            ¿Quieres modificar algún otro dato?
         </template>
     </category>
 
